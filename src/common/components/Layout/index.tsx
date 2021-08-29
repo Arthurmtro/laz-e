@@ -10,10 +10,12 @@ import { makeStyles, Container, Box } from "@material-ui/core"
 const useLayoutStyle = makeStyles((theme) => ({
     root: {
         minHeight: "100vh",
-        backgroundColor: "#4158D0",
+        backgroundColor: "#2a2b2e",
         backgroundImage: " linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)",
     },
-    container: {},
+    container: {
+        padding: theme.spacing(0, 3),
+    },
 }))
 
 const Layout: FC<any> = ({ children }) => {

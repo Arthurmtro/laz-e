@@ -14,25 +14,25 @@ if (require("electron-squirrel-startup")) {
     app.quit()
 }
 
-const appStore = new Store({
+const shortcutstore = new Store({
     // We'll call our data file 'user-preferences'
     configName: "user-preferences",
     defaults: {
-        windowBounds: { width: 720, height: 480 },
+        windowBounds: { width: 720, height: 530 },
     },
 })
 
 let mainWindow: any
 
 const createWindow = (): void => {
-    let { width, height } = appStore.get("windowBounds")
+    let { width, height } = shortcutstore.get("windowBounds")
     // Create the browser window.
 
     mainWindow = new BrowserWindow({
         width: width,
         height: height,
         minWidth: 640,
-        minHeight: 360,
+        minHeight: 530,
         frame: false,
         backgroundColor: "#2A2A2A",
         webPreferences: {
@@ -62,7 +62,7 @@ const createWindow = (): void => {
 
     mainWindow.on("resize", () => {
         let { width, height } = mainWindow.getBounds()
-        appStore.set("windowBounds", { width, height })
+        shortcutstore.set("windowBounds", { width, height })
     })
 }
 

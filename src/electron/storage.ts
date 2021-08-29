@@ -1,3 +1,5 @@
+import { IProfile } from "../type/profile"
+
 const electron = require("electron")
 const ipcMain = require("electron").ipcMain
 const fs = require("fs")
@@ -21,11 +23,11 @@ class Store {
         this.data = parseDataFile(this.path, opts.defaults)
     }
 
-    get(key: any) {
+    get(key: string) {
         return this.data[key]
     }
 
-    set(key: any, val: any) {
+    set(key: string, val: IProfile | any) {
         try {
             this.data[key] = val
             fs.writeFileSync(this.path, JSON.stringify(this.data))
@@ -34,7 +36,7 @@ class Store {
         }
     }
 
-    setProfileInfos(key: any, val: any) {
+    editProfileInfos(key: number, val: IProfile) {
         try {
             this.data["profiles"][key] = val
             fs.writeFileSync(this.path, JSON.stringify(this.data))
@@ -43,12 +45,34 @@ class Store {
         }
     }
 
-    addProfileInfos(val: any) {
+    addProfileInfos(val: IProfile) {
         try {
             this.data["profiles"].push(val)
             fs.writeFileSync(this.path, JSON.stringify(this.data))
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    removeProfileInfos(title: string) {
+        try {
+            this.data["profiles"] = this.data["profiles"].filter((profile: IProfile) => profile.title !== title)
+            fs.writeFileSync(this.path, JSON.stringify(this.data))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    checkProfileTitle(title: string): boolean {
+        try {
+            if (this.data["profiles"].some((profile: IProfile) => profile.title === title)) {
+                return false
+            } else {
+                return true
+            }
+        } catch (error) {
+            console.log(error)
+            return true
         }
     }
 }
@@ -59,9 +83,9 @@ const profileStore = new Store({
         profiles: [
             {
                 title: "Work",
-                apps: [
+                shortcuts: [
                     {
-                        appTitle: "Notion",
+                        title: "Notion",
                         path: "C:\\Users\\arthu\\AppData\\Local\\Programs\\Notion\\Notion.exe",
                     },
                 ],
@@ -70,12 +94,20 @@ const profileStore = new Store({
     },
 })
 
-ipcMain.handle("write-profiles-data", (event, key, value) => {
-    return profileStore.setProfileInfos(key, value)
+ipcMain.handle("edit-profiles-data", (event, key, value) => {
+    return profileStore.editProfileInfos(key, value)
 })
 
 ipcMain.handle("add-profiles-data", (event, value) => {
     return profileStore.addProfileInfos(value)
+})
+
+ipcMain.handle("remove-profiles-data", (event, title) => {
+    return profileStore.removeProfileInfos(title)
+})
+
+ipcMain.handle("check-profile-title", (event, title) => {
+    return profileStore.checkProfileTitle(title)
 })
 
 ipcMain.handle("parse-profiles-data", () => {

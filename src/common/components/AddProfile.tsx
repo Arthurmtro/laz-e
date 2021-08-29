@@ -1,54 +1,99 @@
-import { ReactElement, useState, useEffect } from "react"
+import { ReactElement, useState, useEffect, FC } from "react"
 
 // Utils
-import { parseProfileData, writeProfileData } from "../../utils"
+import { addProfileData, isTitleValid } from "../../utils"
+import { IProfile } from "../../type/profile"
 
 // Material UI
-import { Box, Button, Input, makeStyles, Dialog, IconButton } from "@material-ui/core"
+import { Box, Button, Input, makeStyles, Dialog, Grid, Card } from "@material-ui/core"
 import AddCircleIcon from "@material-ui/icons/AddCircle"
 
-const useAddProfileStyle = makeStyles((theme) => ({}))
+const useAddProfileStyle = makeStyles((theme) => ({
+    root: {
+        backgroundColor: "#00000040",
+        padding: theme.spacing(2),
+        height: theme.spacing(25),
+        boxShadow: theme.shadows[10],
+        borderRadius: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        cursor: "pointer",
+    },
+    icon: {
+        height: theme.spacing(8),
+        width: theme.spacing(8),
+    },
+}))
 
-const AddProfile = (): ReactElement => {
+interface IAddProfile {
+    setConfigs: any
+}
+
+const INITIAL_STATE: IProfile = {
+    title: "",
+    shortcuts: [
+        {
+            title: "Notion",
+            path: "C:\\Users\\arthu\\AppData\\Local\\Programs\\Notion\\Notion.exe",
+        },
+    ],
+}
+
+const AddProfile: FC<IAddProfile> = ({ setConfigs }): ReactElement => {
     const classes = useAddProfileStyle()
     const [openAddDialog, setOpenAddDialog] = useState<boolean>(false)
-    const [newProfile, setNewProfile] = useState<any>({})
-    const [configs, setConfigs] = useState([])
+    const [emptyFields, setEmptyFields] = useState<boolean>(true)
+    const [validTitle, setValidTitle] = useState<boolean>(true)
+    const [newProfile, setNewProfile] = useState<IProfile>(INITIAL_STATE)
 
     useEffect(() => {
-        parseProfileData(setConfigs)
-    }, [])
-
-    useEffect(() => {
-        console.log(`newProfile`, newProfile)
+        isTitleValid(newProfile.title.trim(), setValidTitle)
+        setEmptyFields([newProfile.title].some((title) => title.trim() === ""))
     }, [newProfile])
 
     const submitNewProfile = () => {
-        setNewProfile((profile: any) => ({
+        setNewProfile((profile: IProfile) => ({
             ...profile,
-            apps: [{ appTitle: "Notion", path: "C:\\Users\\arthu\\AppData\\Local\\Programs\\Notion\\Notion.exe" }],
+            title: profile.title.trim(),
         }))
-        writeProfileData(configs.length, newProfile, setConfigs)
-        setNewProfile({})
+        setOpenAddDialog(false)
+        setNewProfile(INITIAL_STATE)
+        console.log(newProfile)
+        addProfileData(newProfile, setConfigs)
     }
 
     return (
         <>
-            <IconButton onClick={() => setOpenAddDialog(true)}>
-                <AddCircleIcon />
-            </IconButton>
-            <Dialog open={openAddDialog} onClose={() => setOpenAddDialog(false)}>
+            <Grid item xs={6} md={4} xl={3}>
+                <Card className={classes.root} onClick={() => setOpenAddDialog(true)}>
+                    <AddCircleIcon className={classes.icon} />
+                </Card>
+            </Grid>
+            <Dialog
+                open={openAddDialog}
+                onClose={() => {
+                    setOpenAddDialog(false)
+                    setNewProfile(INITIAL_STATE)
+                }}>
                 <Box px={10} py={6}>
                     <Input
-                        value={newProfile?.title}
+                        inputProps={{ maxLength: 15 }}
+                        value={newProfile.title}
                         onChange={(e) => {
-                            setNewProfile((prevState: any) => ({
+                            setNewProfile((prevState: IProfile) => ({
                                 ...prevState,
-                                title: e.target.value,
+                                title: e.target.value.trimStart(),
                             }))
                         }}
                     />
-                    <Button variant="outlined" onClick={() => submitNewProfile()}>
+                    <Input
+                        type="file"
+                        onChange={(e) => {
+                            console.log(e.target.value)
+                        }}
+                    />
+                    <Button disabled={emptyFields || !validTitle} variant="outlined" onClick={() => submitNewProfile()}>
                         publish
                     </Button>
                 </Box>
