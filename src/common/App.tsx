@@ -16,6 +16,9 @@ import MenuButton from "./components/MenuButton"
 
 const App = () => {
     const [configs, setConfigs] = useState<IProfile[]>([])
+    const [selectMode, setSelectMode] = useState<boolean>(false)
+
+    console.log(selectMode)
 
     useEffect(() => {
         parseProfileData(setConfigs)
@@ -31,13 +34,13 @@ const App = () => {
                         configs.map((config, idx) => (
                             <Grid key={idx} item xs={6} md={4} xl={3}>
                                 <Box mb={2}>
-                                    <ProfileBox id={idx} config={config} setConfigs={setConfigs} />
+                                    <ProfileBox id={idx} config={config} setConfigs={setConfigs} selectMode={selectMode} />
                                 </Box>
                             </Grid>
                         ))}
                     <AddProfile setConfigs={setConfigs} />
                 </Grid>
-                <MenuButton />
+                {/* <MenuButton setConfigs={setConfigs} setSelectMode={setSelectMode} /> */}
             </Layout>
         </ThemeProvider>
     )

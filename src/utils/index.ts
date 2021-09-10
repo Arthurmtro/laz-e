@@ -36,3 +36,9 @@ export const isTitleValid = (title: string, setValidTitle: any) => {
         setValidTitle(res)
     })
 }
+
+export const getFileIcon = async (path: string) => {
+    return await Promise.resolve(ipcRenderer.invoke("get-file", path)).then((res) => {
+        return res
+    })
+}

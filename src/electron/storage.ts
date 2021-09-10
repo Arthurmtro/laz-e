@@ -1,3 +1,4 @@
+import { IStore } from "../type/Store"
 import { IProfile } from "../type/profile"
 
 const electron = require("electron")
@@ -16,7 +17,7 @@ class Store {
     path: any
     data: any
 
-    constructor(opts: any) {
+    constructor(opts: IStore) {
         const userDataPath = (electron.app || electron.remote.app).getPath("userData")
         this.path = path.join(userDataPath, opts.configName + ".json")
 
@@ -80,17 +81,7 @@ class Store {
 const profileStore = new Store({
     configName: "user-profiles",
     defaults: {
-        profiles: [
-            {
-                title: "Work",
-                shortcuts: [
-                    {
-                        title: "Notion",
-                        path: "C:\\Users\\arthu\\AppData\\Local\\Programs\\Notion\\Notion.exe",
-                    },
-                ],
-            },
-        ],
+        profiles: [],
     },
 })
 

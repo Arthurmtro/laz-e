@@ -161,20 +161,20 @@ const themeDark: Theme = createTheme({
     palette: {
         common: {
             black: "#000",
-            white: "#FFFFFF",
+            white: "#ffffffDD",
         },
         type: "dark",
         primary: {
-            main: "#00FFB0",
-            contrastText: "#101010",
-            light: "rgb(51, 255, 191)",
-            dark: "rgb(0, 178, 123)",
+            main: "#414141",
+            contrastText: "#FFFFFF",
+            light: "#C5C5C5",
+            dark: "#121212",
         },
         secondary: {
-            main: "#009A2B",
-            light: "rgb(51, 174, 85)",
-            dark: "rgb(0, 107, 30)",
-            contrastText: "#fff",
+            main: "#C5C5C5",
+            light: "#4b4b4b",
+            dark: "#47474729",
+            contrastText: "#FFFFFFDD",
         },
         error: {
             main: "#ff5d60",

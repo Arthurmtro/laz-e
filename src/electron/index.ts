@@ -18,7 +18,7 @@ const shortcutstore = new Store({
     // We'll call our data file 'user-preferences'
     configName: "user-preferences",
     defaults: {
-        windowBounds: { width: 720, height: 530 },
+        windowBounds: { width: 920, height: 530 },
     },
 })
 
@@ -31,7 +31,7 @@ const createWindow = (): void => {
     mainWindow = new BrowserWindow({
         width: width,
         height: height,
-        minWidth: 640,
+        minWidth: 850,
         minHeight: 530,
         frame: false,
         backgroundColor: "#2A2A2A",
@@ -112,5 +112,13 @@ ipcMain.handle("open-app", (event, executablePath) => {
             console.log(err)
             return
         }
+    })
+})
+
+// get file ICON
+ipcMain.handle("get-file", (event, filePath) => {
+    return app.getFileIcon(filePath).then((fileIcon) => {
+        console.log(`fileIcon`, fileIcon.toDataURL())
+        return fileIcon.toDataURL()
     })
 })

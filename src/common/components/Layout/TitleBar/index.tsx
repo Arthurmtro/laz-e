@@ -48,7 +48,7 @@ const Titlebar = () => {
                 <div className="Title-Bar__section-center"></div>
                 <div className="Title-Bar__section-windows-control">
                     <div className="section-windows-control_box">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" strokeLinejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeLinejoin="round">
                             <circle
                                 onClick={minimizeHandler}
                                 className={isActive ? "minimize-active_logo" : "minimize-inactive_logo"}
@@ -60,7 +60,7 @@ const Titlebar = () => {
                     </div>
                     {isMaximized ? (
                         <div className="section-windows-control_box">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" strokeLinejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeLinejoin="round">
                                 <circle
                                     onClick={unmaximizeHandler}
                                     className={isActive ? "unmaximize-active_logo" : "unmaximize-inactive_logo"}
@@ -72,7 +72,7 @@ const Titlebar = () => {
                         </div>
                     ) : (
                         <div className="section-windows-control_box">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" strokeLinejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeLinejoin="round">
                                 <circle
                                     onClick={maximizeHandler}
                                     className={isActive ? "maximize-active_logo" : "maximize-inactive_logo"}
@@ -84,7 +84,7 @@ const Titlebar = () => {
                         </div>
                     )}
                     <div className="section-windows-control_box">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" strokeLinejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" strokeLinejoin="round">
                             <circle
                                 onClick={closeHandler}
                                 className={isActive ? "close-active_logo" : "close-inactive_logo"}
