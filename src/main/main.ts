@@ -1,19 +1,11 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
-
-/**
- * This module executes inside of electron's main process. You can start
- * electron renderer process from here and communicate with the other processes
- * through IPC.
- *
- * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
- */
-import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
+import path from 'path';
+
 import { resolveHtmlPath } from './util';
+import Store from './storage';
 
 export default class AppUpdater {
   constructor() {
@@ -24,12 +16,6 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -56,7 +42,17 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+const shortcutstore = new Store({
+  // We'll call our data file 'user-preferences'
+  configName: 'user-preferences',
+  defaults: {
+    windowBounds: { width: 920, height: 530 },
+  },
+});
+
 const createWindow = async () => {
+  const { width, height } = shortcutstore.get('windowBounds');
+
   if (isDevelopment) {
     await installExtensions();
   }
@@ -70,16 +66,27 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
+    frame: false,
     show: false,
-    width: 1024,
-    height: 728,
+    width,
+    height,
+    minWidth: 850,
+    minHeight: 530,
+    backgroundColor: '#2A2A2A', // Dark
+    // backgroundColor: '#fafafa', // Light
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: true,
     },
   });
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
+
+  if (isDevelopment) {
+    // mainWindow.webContents.openDevTools({ mode: 'detach' });
+  }
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -96,30 +103,76 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  mainWindow.on('maximize', () => {
+    if (!mainWindow) return;
+    mainWindow.webContents.send('maximized');
+  });
 
-  // Open urls in the user's browser
+  mainWindow.on('unmaximize', () => {
+    if (!mainWindow) return;
+    mainWindow.webContents.send('unmaximized');
+  });
+
+  mainWindow.on('resize', () => {
+    if (!mainWindow) return;
+    const { width: windowWidth, height: windowHeight } = mainWindow.getBounds();
+    shortcutstore.set('windowBounds', {
+      width: windowWidth,
+      height: windowHeight,
+    });
+  });
+
   mainWindow.webContents.setWindowOpenHandler((edata) => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
 
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
+  mainWindow.setMenu(null);
+
+  // eslint-disable-next-line no-new
   new AppUpdater();
 };
 
-/**
- * Add event listeners...
- */
+ipcMain.handle('minimize-event', () => {
+  if (!mainWindow) return;
+  mainWindow.minimize();
+});
+
+ipcMain.handle('maximize-event', () => {
+  if (!mainWindow) return;
+  mainWindow.maximize();
+});
+
+ipcMain.handle('unmaximize-event', () => {
+  if (!mainWindow) return;
+  mainWindow.unmaximize();
+});
+
+ipcMain.handle('close-event', () => {
+  app.quit();
+});
+
+ipcMain.handle('focus-window', () => {
+  if (!mainWindow) return;
+  console.log('FOCUSING');
+  mainWindow.show();
+  mainWindow.focus();
+});
 
 app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('browser-window-focus', () => {
+  if (!mainWindow) return;
+  mainWindow.webContents.send('focused');
+});
+
+app.on('browser-window-blur', () => {
+  if (!mainWindow) return;
+  mainWindow.webContents.send('blurred');
 });
 
 app
@@ -127,8 +180,6 @@ app
   .then(() => {
     createWindow();
     app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
   })

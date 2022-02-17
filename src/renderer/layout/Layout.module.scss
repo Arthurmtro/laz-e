@@ -1,0 +1,48 @@
+.layout {
+  margin-top: 2.5rem;
+  display: flex;
+  height: 100vh;
+}
+
+.menu-panel {
+  width: 6rem;
+}
+
+.menu-content {
+  background-color: var(--background-color-darker);
+  height: 100vh;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: 6rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.menu-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  margin-top: 2.5rem;
+}
+
+.page-content {
+  width: 100%;
+  background-color: var(--background-color);
+  max-height: calc(100vh - 4.5rem);
+  overflow-y: scroll;
+
+  padding: 1rem 2rem;
+
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+}

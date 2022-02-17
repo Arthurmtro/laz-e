@@ -1,0 +1,53 @@
+.box {
+  border-radius: 37px;
+  background: #2a2a2a;
+  box-shadow: 22px 22px 39px #222222, -22px -22px 39px #323232;
+
+  height: 13rem;
+  min-width: 20rem;
+
+  display: flex;
+  overflow: hidden;
+}
+
+.left {
+  width: 65%;
+  padding-left: 1rem;
+}
+
+.actions-buttons {
+  width: 35%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+
+  & button {
+    background-color: var(--primary-color);
+    border: none;
+    cursor: pointer;
+
+    & svg {
+      transform: scale(0.8);
+    }
+  }
+}
+
+.delete-button {
+  border-radius: 20px;
+  width: 40%;
+  height: 20%;
+}
+
+.edit-button {
+  border-radius: 20px;
+  width: 40%;
+  height: 20%;
+}
+
+.run-button {
+  border-radius: 20px;
+  width: 70%;
+  height: 35%;
+}

@@ -1,0 +1,141 @@
+.Titlebar {
+  -webkit-app-region: drag;
+}
+
+.Titlebar-drag-region {
+  top: 0;
+  left: 0;
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  -webkit-app-region: drag;
+  background-color: var(--background-color-darker);
+}
+
+.resizer {
+  -webkit-app-region: no-drag;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 20%;
+}
+
+.Title-Bar {
+  top: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  position: fixed;
+}
+
+.Title-Bar-inactive {
+  top: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  position: fixed;
+}
+
+.Title-Bar__section-windows-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+
+.section-windows-control_box {
+  /* background-color: purple; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.05s ease-in;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+}
+
+.section-windows-control_box > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.minimize-active_logo {
+  fill: #525252;
+  transition: all 0.05s ease-in;
+}
+
+.minimize-active_logo:hover {
+  fill: #f8b92b;
+  transition: all 0.05s ease-in;
+}
+
+.minimize-inactive_logo {
+  fill: #3f3f3f;
+  transition: all 0.05s ease-in;
+}
+
+.minimize-inactive_logo:hover {
+  fill: #f8b92b;
+  transition: all 0.05s ease-in;
+}
+
+.maximize-active_logo {
+  fill: #525252;
+  transition: all 0.05s ease-in;
+}
+
+.maximize-active_logo:hover {
+  fill: #2bc73b;
+  transition: all 0.05s ease-in;
+}
+
+.maximize-inactive_logo {
+  fill: #3f3f3f;
+  transition: all 0.05s ease-in;
+}
+
+.maximize-inactive_logo:hover {
+  fill: #2bc73b;
+  transition: all 0.05s ease-in;
+}
+
+.unmaximize-active_logo {
+  fill: #525252;
+  transition: all 0.05s ease-in;
+}
+
+.unmaximize-active_logo:hover {
+  fill: #2bc73b;
+  transition: all 0.05s ease-in;
+}
+
+.unmaximize-inactive_logo {
+  fill: #3f3f3f;
+  transition: all 0.05s ease-in;
+}
+
+.unmaximize-inactive_logo:hover {
+  fill: #2bc73b;
+  transition: all 0.05s ease-in;
+}
+
+.close-active_logo {
+  fill: #525252;
+  transition: all 0.05s ease-in;
+}
+
+.close-active_logo:hover {
+  fill: #f35d58;
+  transition: all 0.05s ease-in;
+}
+
+.close-inactive_logo {
+  fill: #3f3f3f;
+  transition: all 0.05s ease-in;
+}
+
+.close-inactive_logo:hover {
+  fill: #f35d58;
+  transition: all 0.05s ease-in;
+}

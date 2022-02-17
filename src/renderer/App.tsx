@@ -1,50 +1,37 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const Hello = () => {
-  return (
-    <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
-  );
-};
+// Libs
+import { parseProfileData } from './libs/ProfilesFuncs';
+
+// Hooks
+import useProfiles from './hooks/useProfiles';
+
+// Pages
+import ProfileConfig from './pages/ProfileConfig';
+import Dashboard from './pages/Dashboard';
+
+// layout
+import Layout from './layout';
 
 export default function App() {
+  const [, setProfiles] = useProfiles();
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('REFRESH TRIGGERED');
+    parseProfileData(setProfiles);
+  }, [setProfiles]);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
+    <MemoryRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/add-profile" element={<ProfileConfig />} />
+          <Route path="/edit-profile" element={<ProfileConfig />} />
+        </Routes>
+      </Layout>
+    </MemoryRouter>
   );
 }

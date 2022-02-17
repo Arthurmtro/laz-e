@@ -1,0 +1,26 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+:root {
+  --primary-color: #2b62f8;
+
+  --background-color: #2a2a2a; // Dark
+  --background-color-darker: #202020; // Dark
+  // --background-color: #fafafa; // Light
+  // --background-color-darker: #dfdfdf;
+
+  // --font-color: #202020; // Light
+  --font-color: #f7f7f7; // dark
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: sans-serif;
+  overflow: hidden;
+
+  color: var(--font-color);
+}

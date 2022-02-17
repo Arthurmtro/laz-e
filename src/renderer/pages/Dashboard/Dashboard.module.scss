@@ -1,0 +1,14 @@
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1.5rem;
+  row-gap: 2rem;
+
+  @media screen and (min-width: 1180px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media screen and (min-width: 2080px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
