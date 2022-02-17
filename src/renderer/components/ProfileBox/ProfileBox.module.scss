@@ -1,18 +1,56 @@
 .box {
   border-radius: 37px;
   background: #2a2a2a;
-  box-shadow: 22px 22px 39px #222222, -22px -22px 39px #323232;
+  box-shadow: 10px 10px 39px #222222, -10px -10px 39px #323232;
 
   height: 13rem;
   min-width: 20rem;
 
   display: flex;
-  overflow: hidden;
 }
 
 .left {
   width: 65%;
   padding-left: 1rem;
+}
+
+.shortcut-icons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 0.5rem;
+
+  height: 8.75rem;
+}
+
+.shortcut-box {
+  position: relative;
+  display: inline-block;
+
+  & span {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1;
+  }
+
+  & img {
+    border-radius: 3px;
+  }
+
+  &:hover {
+    & span {
+      visibility: visible;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
 }
 
 .actions-buttons {
@@ -31,23 +69,44 @@
     & svg {
       transform: scale(0.8);
     }
+
+    &:hover {
+      box-shadow: 0 0 10px var(--primary-color);
+    }
   }
 }
 
-.delete-button {
-  border-radius: 20px;
-  width: 40%;
-  height: 20%;
-}
-
 .edit-button {
-  border-radius: 20px;
+  border-radius: 6px;
   width: 40%;
   height: 20%;
 }
 
 .run-button {
-  border-radius: 20px;
-  width: 70%;
-  height: 35%;
+  border-radius: 6px;
+  width: 60%;
+  height: 55%;
+}
+
+.add-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  background: #1f1f1f;
+  box-shadow: 10px 10px 39px #1a1a1a, -10px -10px 39px #242424;
+
+  border-radius: 37px;
+
+  height: 13rem;
+  min-width: 20rem;
+
+  & svg {
+    height: 5rem;
+    width: 5rem;
+
+    fill: var(--font-color);
+    opacity: 0.5;
+  }
 }

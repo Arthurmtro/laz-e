@@ -3,8 +3,8 @@ import { atom, useAtom } from 'jotai';
 // types
 import { IProfile } from 'type/profile';
 
-const profilesAtom = atom([]);
+const profilesAtom = atom<IProfile[]>([]);
 
 export default function useProfiles() {
-  return useAtom<IProfile[]>(profilesAtom);
+  return useAtom(profilesAtom);
 }

@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
+import { toast } from 'react-toastify';
 
 import { IProfile } from '../../type/profile';
 
 const { ipcRenderer } = window.electron;
 
-export const openApp = (executablePath: string) => {
-  ipcRenderer.invoke('open-app', executablePath);
+export const runProfile = (profileId: string) => {
+  ipcRenderer.invoke('run-profile', profileId);
 };
 
 export const parseProfileData = async (
@@ -18,23 +19,23 @@ export const parseProfileData = async (
     );
     setter(value === undefined ? [] : value);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
+    toast.error(`error :>> ${error}`);
   }
 };
 
 export const editProfileData = async (
-  key: string,
-  value: IProfile,
+  editedProfile: IProfile,
   setter: Dispatch<SetStateAction<IProfile[]>>
 ) => {
   try {
-    await Promise.resolve(ipcRenderer.invoke('edit-profiles-data', key, value));
+    await Promise.resolve(
+      ipcRenderer.invoke('edit-profiles-data', editedProfile)
+    );
 
     parseProfileData(setter);
+    toast.success('Profile edited');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
+    toast.error(`error :>> ${error}`);
   }
 };
 
@@ -52,9 +53,9 @@ export const addProfileData = async (
     );
 
     parseProfileData(setter);
+    toast.success('Profile added');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
+    toast.error(`error :>> ${error}`);
   }
 };
 
@@ -66,38 +67,17 @@ export const deleteProfileData = async (
     await Promise.resolve(ipcRenderer.invoke('remove-profiles-data', id));
 
     parseProfileData(setter);
+    toast.success('Profile deleted');
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
-  }
-};
-
-export const isTitleValid = async (
-  title: string,
-  setValidTitle: (arg: boolean) => void
-) => {
-  try {
-    if (title.trim() === '') {
-      setValidTitle(true);
-    }
-
-    const isValid = await Promise.resolve<boolean>(
-      ipcRenderer.invoke('check-profile-title', title)
-    );
-
-    setValidTitle(isValid);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
+    toast.error(`error :>> ${error}`);
   }
 };
 
 export const getFileIcon = async (path: string) => {
   try {
-    return await Promise.resolve<boolean>(ipcRenderer.invoke('get-file', path));
+    return await Promise.resolve<string>(ipcRenderer.invoke('get-file', path));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error => ', error);
+    toast.error(`error :>> ${error}`);
     return `Error => ${error}`;
   }
 };

@@ -1,0 +1,166 @@
+.shortcut-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  & img {
+    width: 32px;
+    height: 32px;
+
+    -webkit-transition: 0.1s -webkit-filter linear;
+    -moz-transition: 0.1s -moz-filter linear;
+    -moz-transition: 0.1s filter linear;
+    -ms-transition: 0.1s -ms-filter linear;
+    -o-transition: 0.1s -o-filter linear;
+    transition: 0.1s filter linear, 0.1s -webkit-filter linear;
+
+    &:hover {
+      filter: grayscale(100%);
+    }
+  }
+}
+
+.shortcut-infos {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0.35rem 0;
+
+  & p {
+    margin: 0.5rem;
+  }
+
+  & span {
+    background-color: var(--background-color-darker);
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    color: var(--font-color-muted);
+    margin-left: 0.15rem;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.profile-config-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 2rem;
+  row-gap: 0;
+
+  @media screen and (min-width: 1300px) {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 2rem;
+  }
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  margin-top: 0.5rem;
+}
+
+.title-zone {
+  display: flex;
+  align-items: center;
+
+  & input {
+    border: none;
+    font-size: 2rem;
+    padding: 0 0.15rem;
+    color: var(--font-color);
+    background-color: transparent;
+    border-bottom: 2px solid var(--font-color);
+    outline: none;
+    width: 90%;
+
+    @media screen and (min-width: 1300px) {
+      width: 90%;
+    }
+  }
+
+  & span {
+    color: #fff;
+    font-size: smaller;
+    width: 2.75rem;
+  }
+}
+
+.actions-buttons {
+  display: flex;
+  align-self: flex-end;
+  gap: 1rem;
+
+  & button {
+    border: none;
+    border-radius: 25px;
+    transition: all 0.1s ease-in-out;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.submit-button {
+  background-color: var(--primary-color);
+  width: 10rem;
+  padding: 1rem 2rem;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 0 10px var(--primary-color);
+  }
+
+  &:disabled {
+    background-color: grey;
+  }
+}
+
+.delete-button {
+  background-color: #9e3232;
+  padding: 0 1rem;
+
+  &:hover {
+    box-shadow: 0 0 10px #9e3232;
+  }
+
+  & svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.input-file {
+  border: none;
+  background-color: var(--font-color);
+  width: 12rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-weight: bold;
+
+  & svg {
+    height: 32px;
+    width: 32px;
+  }
+
+  &:hover {
+    box-shadow: 0 0 10px var(--font-color);
+  }
+}
+
+.input-checkbox {
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

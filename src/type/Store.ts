@@ -1,4 +1,7 @@
+import { IProfile } from 'type/profile';
+
 export interface IStore {
   configName: string;
-  defaults: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaults: IProfile[] | any;
 }

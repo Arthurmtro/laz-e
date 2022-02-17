@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2021",
     "module": "commonjs",
-    "lib": ["dom", "esnext"],
+    "lib": ["es5", "es6", "dom", "dom.iterable", "esnext"],
     "declaration": true,
     "declarationMap": true,
     "jsx": "react-jsx",

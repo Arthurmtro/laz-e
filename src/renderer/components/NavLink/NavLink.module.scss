@@ -1,6 +1,7 @@
 .active {
   color: white;
   background-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
   text-decoration: none;
   display: flex;
   justify-content: center;
@@ -33,6 +34,10 @@
 
   height: 70%;
   width: 75%;
+
+  &:hover {
+    color: var(--primary-color);
+  }
 
   & svg {
     padding: 0.6rem;

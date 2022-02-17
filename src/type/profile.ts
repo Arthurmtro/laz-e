@@ -1,7 +1,7 @@
 export interface IShortcut {
   title: string;
   path: string;
-  icon?: any;
+  icon: string;
   // TODO: Handle if is automacion
 }
 
@@ -9,4 +9,5 @@ export interface IProfile {
   id: string;
   title: string;
   shortcuts: IShortcut[];
+  syncWithApp: boolean;
 }

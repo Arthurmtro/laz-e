@@ -1,0 +1,52 @@
+.modal-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.modal {
+  position: absolute;
+  top: 20%;
+  left: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:nth-child(1n) {
+    background-color: var(--background-color-darker);
+    padding: 2rem 4rem;
+    border-radius: 6px;
+    box-shadow: 0 0 20px var(--background-color-darker);
+    width: 15rem;
+    height: 10rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+
+  & button {
+    border: none;
+    border-radius: 30px;
+    padding: 0.25rem 2rem;
+    height: 3rem;
+    font-size: large;
+    margin-top: 3rem;
+  }
+}
+
+.accept {
+  background-color: rgb(55, 141, 55);
+  color: var(--font-color);
+}
+
+.deny {
+  background-color: var(--font-color);
+}

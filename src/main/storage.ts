@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { readFileSync, writeFileSync } from 'fs';
+import { exec, execFile } from 'child_process';
 import { ipcMain, app } from 'electron';
 import { join } from 'path';
 
 // Types
+import { IProfile, IShortcut } from '../type/profile';
 import { IStore } from '../type/Store';
-import { IProfile } from '../type/profile';
 
 const parseDataFile = (filePath: string, defaults: any) => {
   try {
@@ -19,7 +20,7 @@ const parseDataFile = (filePath: string, defaults: any) => {
 class Store {
   path: string;
 
-  data: any;
+  data: IProfile[] | any;
 
   constructor(opts: IStore) {
     const userDataPath = app.getPath('userData');
@@ -41,10 +42,11 @@ class Store {
     }
   }
 
-  editProfileInfos(key: number, val: IProfile) {
+  editProfileInfos(editedProfile: IProfile) {
     try {
-      this.data.profiles[key] = val;
-      writeFileSync(this.path, JSON.stringify(this.data));
+      this.removeProfileInfos(editedProfile.id);
+
+      this.addProfileInfos(editedProfile);
     } catch (error) {
       console.log(error);
     }
@@ -52,7 +54,10 @@ class Store {
 
   addProfileInfos(val: IProfile) {
     try {
-      this.data.profiles.push(val);
+      this.data.profiles.push({
+        ...val,
+        shortcuts: val.shortcuts.slice(0, 20),
+      });
       writeFileSync(this.path, JSON.stringify(this.data));
     } catch (error) {
       console.log(error);
@@ -70,17 +75,39 @@ class Store {
     }
   }
 
-  checkProfileTitle(title: string): boolean {
+  runProfileWithId(profileId: string) {
     try {
-      if (
-        this.data.profiles.some((profile: IProfile) => profile.title === title)
-      ) {
-        return false;
+      const executablePaths = this.data.profiles.find(
+        ({ id }) => id === profileId
+      )?.shortcuts;
+
+      if (!executablePaths) return;
+
+      console.log('executablePaths', executablePaths);
+
+      if (this.data.profiles.find(({ id }) => id === profileId)?.syncWithApp) {
+        executablePaths.forEach((executablePath: IShortcut) => {
+          execFile(executablePath.path, (error, stdout, stderr) => {
+            if (error) {
+              throw error;
+            }
+            console.log(stdout);
+            console.log(stderr);
+          });
+        });
+      } else {
+        executablePaths.forEach((executablePath: IShortcut) => {
+          exec(executablePath.path, (error, stdout, stderr) => {
+            if (error) {
+              throw error;
+            }
+            console.log(stdout);
+            console.log(stderr);
+          });
+        });
       }
-      return true;
     } catch (error) {
       console.log(error);
-      return true;
     }
   }
 }
@@ -92,8 +119,8 @@ const profileStore = new Store({
   },
 });
 
-ipcMain.handle('edit-profiles-data', (_event, key, value) => {
-  return profileStore.editProfileInfos(key, value);
+ipcMain.handle('edit-profiles-data', (_event, editedProfile) => {
+  return profileStore.editProfileInfos(editedProfile);
 });
 
 ipcMain.handle('add-profiles-data', (_event, value) => {
@@ -104,13 +131,20 @@ ipcMain.handle('remove-profiles-data', (_event, id) => {
   return profileStore.removeProfileInfos(id);
 });
 
-ipcMain.handle('check-profile-title', (_event, title) => {
-  return profileStore.checkProfileTitle(title);
-});
-
 ipcMain.handle('parse-profiles-data', () => {
   console.log('res => ', profileStore.get('profiles'));
   return profileStore.get('profiles');
+});
+
+ipcMain.handle('get-file', (_event, filePath) => {
+  return app.getFileIcon(filePath).then((fileIcon) => {
+    console.log(`fileIcon`, fileIcon.toDataURL());
+    return fileIcon.toDataURL();
+  });
+});
+
+ipcMain.handle('run-profile', (_event, profileId) => {
+  return profileStore.runProfileWithId(profileId);
 });
 
 export default Store;
