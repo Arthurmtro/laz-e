@@ -103,7 +103,7 @@ const createWindow = async () => {
     }
 
     tray = new Tray(getAssetPath('icon_2.png'));
-    tray.setToolTip('Laz-E');
+    tray.setToolTip('Laz-e');
     tray.setContextMenu(
       Menu.buildFromTemplate([
         {

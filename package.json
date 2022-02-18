@@ -30,8 +30,8 @@
     ]
   },
   "build": {
-    "productName": "Laz-E",
-    "appId": "org.erb.Laz-E",
+    "productName": "Laz-e",
+    "appId": "org.erb.Laz-e",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -108,7 +108,7 @@
     "url": "https://github.com/Arthurmtro/laz-e/issues"
   },
   "keywords": [
-    "Laz-E",
+    "Laz-e",
     "App",
     "Desktop"
   ],
