@@ -159,7 +159,7 @@ const ProfileConfig = (): JSX.Element => {
 			z"
             />
           </svg>
-          Add applications
+          Add application(s)
         </button>
 
         <input

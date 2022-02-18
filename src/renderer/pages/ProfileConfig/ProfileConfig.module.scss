@@ -82,7 +82,7 @@
   }
 
   & span {
-    color: #fff;
+    color: var(--font-color-muted);
     font-size: smaller;
     width: 2.75rem;
   }
@@ -102,6 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
   }
 }
 

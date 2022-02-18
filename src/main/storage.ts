@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { readFileSync, writeFileSync } from 'fs';
-import { exec, execFile } from 'child_process';
+import { spawn } from 'child_process';
 import { ipcMain, app } from 'electron';
 import { join } from 'path';
 
@@ -83,31 +83,23 @@ class Store {
 
       if (!executablePaths) return;
 
-      console.log('executablePaths', executablePaths);
+      // TODOS: Add listeners
 
-      if (this.data.profiles.find(({ id }) => id === profileId)?.syncWithApp) {
-        executablePaths.forEach((executablePath: IShortcut) => {
-          execFile(executablePath.path, (error, stdout, stderr) => {
-            if (error) {
-              throw error;
-            }
-            console.log(stdout);
-            console.log(stderr);
-          });
+      executablePaths.forEach((executablePath: IShortcut) => {
+        const executedApp = spawn(executablePath.path, {
+          detached: !this.data.profiles.find(({ id }) => id === profileId)
+            ?.syncWithApp,
+          stdio: 'ignore',
         });
-      } else {
-        executablePaths.forEach((executablePath: IShortcut) => {
-          exec(executablePath.path, (error, stdout, stderr) => {
-            if (error) {
-              throw error;
-            }
-            console.log(stdout);
-            console.log(stderr);
-          });
+
+        executedApp.on('exit', (code, signal) => {
+          console.log(
+            `child process exited with code ${code} and signal ${signal}`
+          );
         });
-      }
+      });
     } catch (error) {
-      console.log(error);
+      console.log('ERROR >> ', error);
     }
   }
 
