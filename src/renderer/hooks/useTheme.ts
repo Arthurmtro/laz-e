@@ -13,16 +13,10 @@ export default function useTheme() {
 
   const init = async () => {
     setTheme(await getTheme());
-
-    console.log('START storedTheme >> ', await getTheme());
-    console.log('START Theme >> ', theme);
   };
 
   const handleChange = async () => {
     const storedTheme = await getTheme();
-
-    console.log('storedTheme >> ', storedTheme);
-    console.log('Theme >> ', theme);
 
     if (storedTheme !== theme) {
       toggleTheme();
