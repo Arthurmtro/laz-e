@@ -136,6 +136,7 @@
 .input-file {
   border: none;
   background-color: var(--font-color);
+  color: var(--font-color-reverse);
   width: 12rem;
   padding: 0.5rem 1.25rem;
   border-radius: 6px;
@@ -149,6 +150,7 @@
   font-weight: bold;
 
   & svg {
+    fill: var(--font-color-reverse);
     height: 32px;
     width: 32px;
   }

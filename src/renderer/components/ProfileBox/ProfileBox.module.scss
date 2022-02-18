@@ -1,7 +1,8 @@
 .box {
   border-radius: 37px;
-  background: #2a2a2a;
-  box-shadow: 10px 10px 39px #222222, -10px -10px 39px #323232;
+
+  background: var(--background-color-darker);
+  box-shadow: 0 0 20px var(--background-color-darker);
 
   height: 13rem;
   min-width: 20rem;
@@ -63,11 +64,13 @@
 
   & button {
     background-color: var(--primary-color);
-    border: none;
+    color: var(--font-color-reverse);
     cursor: pointer;
+    border: none;
 
     & svg {
       transform: scale(0.8);
+      fill: var(--font-color-reverse);
     }
 
     &:hover {
@@ -94,8 +97,8 @@
   align-items: center;
   cursor: pointer;
 
-  background: #1f1f1f;
-  box-shadow: 10px 10px 39px #1a1a1a, -10px -10px 39px #242424;
+  background: var(--background-color-darker);
+  box-shadow: 0 0 20px var(--background-color-darker);
 
   border-radius: 37px;
 

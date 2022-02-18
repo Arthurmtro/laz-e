@@ -11,11 +11,12 @@ import { parseProfileData } from './libs/ProfilesFuncs';
 import useProfiles from './hooks/useProfiles';
 
 // layout
-import Layout from './layout';
+const Layout = lazy(() => import('./layout'));
 
 // Pages
 const ProfileConfig = lazy(() => import('./pages/ProfileConfig'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Settings = lazy(() => import('./pages/Settings'));
 
 export default function App() {
   const [, setProfiles] = useProfiles();
@@ -45,8 +46,9 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/add-profile" element={<ProfileConfig />} />
             <Route path="/edit-profile" element={<ProfileConfig />} />
+            <Route path="/add-profile" element={<ProfileConfig />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </Layout>
       </Suspense>

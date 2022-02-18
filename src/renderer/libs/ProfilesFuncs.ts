@@ -81,3 +81,45 @@ export const getFileIcon = async (path: string) => {
     return `Error => ${error}`;
   }
 };
+
+export const getTheme = async () => {
+  try {
+    return await Promise.resolve<string>(ipcRenderer.invoke('get-theme'));
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return `Error => ${error}`;
+  }
+};
+
+export const setTheme = async (newTheme: string) => {
+  try {
+    return await Promise.resolve<string>(
+      ipcRenderer.invoke('set-theme', newTheme)
+    );
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return `Error => ${error}`;
+  }
+};
+
+export const getCloseEvent = async () => {
+  try {
+    return await Promise.resolve<boolean>(
+      ipcRenderer.invoke('get-close-event')
+    );
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return false;
+  }
+};
+
+export const setCloseEvent = async (newValue: boolean) => {
+  try {
+    return await Promise.resolve<boolean>(
+      ipcRenderer.invoke('set-close-event', newValue)
+    );
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return false;
+  }
+};

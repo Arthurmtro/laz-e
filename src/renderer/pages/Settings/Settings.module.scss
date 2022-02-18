@@ -1,0 +1,27 @@
+.settings-page {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  & article {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    & label {
+      font-size: large;
+    }
+  }
+}
+
+.select {
+  color: #202020;
+  font-size: large;
+}
+
+.theme-input {
+  & label {
+    font-weight: bold;
+  }
+}

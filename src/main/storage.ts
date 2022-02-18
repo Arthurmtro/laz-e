@@ -33,7 +33,7 @@ class Store {
     return this.data[key];
   }
 
-  set(key: string, val: IProfile | { width: number; height: number }) {
+  set(key: string, val: IProfile | any) {
     try {
       this.data[key] = val;
       writeFileSync(this.path, JSON.stringify(this.data));
@@ -110,6 +110,46 @@ class Store {
       console.log(error);
     }
   }
+
+  getTheme() {
+    try {
+      return JSON.parse(
+        readFileSync(this.path, { encoding: 'utf8', flag: 'r' })
+      )?.theme;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  setTheme(newTheme: string) {
+    try {
+      this.data.theme = newTheme;
+      writeFileSync(this.path, JSON.stringify(this.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getCloseEvent() {
+    try {
+      return JSON.parse(
+        readFileSync(this.path, { encoding: 'utf8', flag: 'r' })
+      )?.closeEvent;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  setCloseEvent(newStatus: boolean) {
+    try {
+      this.data.closeEvent = newStatus;
+      writeFileSync(this.path, JSON.stringify(this.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 const profileStore = new Store({
@@ -132,7 +172,6 @@ ipcMain.handle('remove-profiles-data', (_event, id) => {
 });
 
 ipcMain.handle('parse-profiles-data', () => {
-  console.log('res => ', profileStore.get('profiles'));
   return profileStore.get('profiles');
 });
 

@@ -1,5 +1,5 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import path from 'path';
@@ -16,6 +16,8 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let isQuiting: boolean;
+let tray: Tray;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -42,16 +44,17 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
-const shortcutstore = new Store({
+const userPreferencesStore = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'user-preferences',
   defaults: {
     windowBounds: { width: 920, height: 530 },
+    theme: 'dark',
   },
 });
 
 const createWindow = async () => {
-  const { width, height } = shortcutstore.get('windowBounds');
+  const { width, height } = userPreferencesStore.get('windowBounds');
 
   if (isDevelopment) {
     await installExtensions();
@@ -97,10 +100,47 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
+
+    tray = new Tray(getAssetPath('icon.png'));
+    tray.setToolTip('Laz-E');
+    tray.setContextMenu(
+      Menu.buildFromTemplate([
+        {
+          label: 'Show App',
+          click() {
+            mainWindow?.show();
+          },
+        },
+        {
+          label: 'Quit',
+          click() {
+            isQuiting = true;
+            app.quit();
+          },
+        },
+      ])
+    );
+
+    tray.on('double-click', () => {
+      if (mainWindow?.isVisible()) {
+        mainWindow?.hide();
+      } else {
+        mainWindow?.show();
+      }
+    });
   });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  mainWindow.on('close', (event) => {
+    if (!mainWindow) return;
+    if (!isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+      event.returnValue = false;
+    }
   });
 
   mainWindow.on('maximize', () => {
@@ -116,14 +156,14 @@ const createWindow = async () => {
   mainWindow.on('resize', () => {
     if (!mainWindow) return;
     const { width: windowWidth, height: windowHeight } = mainWindow.getBounds();
-    shortcutstore.set('windowBounds', {
+    userPreferencesStore.set('windowBounds', {
       width: windowWidth,
       height: windowHeight,
     });
   });
 
-  mainWindow.webContents.setWindowOpenHandler((edata) => {
-    shell.openExternal(edata.url);
+  mainWindow.webContents.setWindowOpenHandler((data) => {
+    shell.openExternal(data.url);
     return { action: 'deny' };
   });
 
@@ -132,6 +172,22 @@ const createWindow = async () => {
   // eslint-disable-next-line no-new
   new AppUpdater();
 };
+
+ipcMain.handle('get-theme', () => {
+  return userPreferencesStore.getTheme();
+});
+
+ipcMain.handle('set-theme', (_event, newTheme: string) => {
+  return userPreferencesStore.setTheme(newTheme);
+});
+
+ipcMain.handle('get-close-event', () => {
+  return userPreferencesStore.getCloseEvent();
+});
+
+ipcMain.handle('set-close-event', (_event, newStatus: boolean) => {
+  return userPreferencesStore.setCloseEvent(newStatus);
+});
 
 ipcMain.handle('minimize-event', () => {
   if (!mainWindow) return;
@@ -149,7 +205,12 @@ ipcMain.handle('unmaximize-event', () => {
 });
 
 ipcMain.handle('close-event', () => {
-  app.quit();
+  console.log('userPreferencesStore.data', userPreferencesStore.data);
+  if (userPreferencesStore.data.closeEvent) {
+    app.quit();
+  } else {
+    mainWindow?.close();
+  }
 });
 
 ipcMain.handle('focus-window', () => {
@@ -157,12 +218,6 @@ ipcMain.handle('focus-window', () => {
   console.log('FOCUSING');
   mainWindow.show();
   mainWindow.focus();
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
 });
 
 app.on('browser-window-focus', () => {
@@ -173,6 +228,16 @@ app.on('browser-window-focus', () => {
 app.on('browser-window-blur', () => {
   if (!mainWindow) return;
   mainWindow.webContents.send('blurred');
+});
+
+app.on('before-quit', () => {
+  isQuiting = true;
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app

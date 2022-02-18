@@ -10,6 +10,7 @@ const Layout: FC<ReactNode> = ({ children }) => {
   const routes = [
     { url: '/', icon: 'dashboard' },
     { url: '/add-profile', icon: 'add' },
+    { url: '/settings', icon: 'settings' },
   ];
 
   return (
