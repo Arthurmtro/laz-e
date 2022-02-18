@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { readFileSync, writeFileSync } from 'fs';
-import { spawn } from 'child_process';
 import { ipcMain, app } from 'electron';
+import { spawn } from 'child_process';
 import { join } from 'path';
 
 // Types
