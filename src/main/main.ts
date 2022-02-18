@@ -49,6 +49,7 @@ const userPreferencesStore = new Store({
   configName: 'user-preferences',
   defaults: {
     windowBounds: { width: 920, height: 530 },
+    CloseEvent: true,
     theme: 'dark',
   },
 });
@@ -77,7 +78,7 @@ const createWindow = async () => {
     minHeight: 530,
     backgroundColor: '#2A2A2A', // Dark
     // backgroundColor: '#fafafa', // Light
-    icon: getAssetPath('icon.png'),
+    icon: getAssetPath('icon_2.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -101,7 +102,7 @@ const createWindow = async () => {
       mainWindow.show();
     }
 
-    tray = new Tray(getAssetPath('icon.png'));
+    tray = new Tray(getAssetPath('icon_2.png'));
     tray.setToolTip('Laz-E');
     tray.setContextMenu(
       Menu.buildFromTemplate([

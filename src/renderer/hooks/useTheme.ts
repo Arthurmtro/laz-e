@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
 
@@ -24,12 +25,10 @@ export default function useTheme() {
 
   useEffect(() => {
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     handleChange();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 
   return { theme, setTheme };

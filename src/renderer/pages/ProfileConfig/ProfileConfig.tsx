@@ -106,6 +106,7 @@ const ProfileConfig = (): JSX.Element => {
   return (
     <div className={styles['profile-config-page']}>
       <Modal
+        text="Profile deletion cannot be canceled"
         openState={openDeletionModal}
         eventDeny={() => setOpenDeletionModal(false)}
         eventAccept={() => {

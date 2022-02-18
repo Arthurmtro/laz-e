@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="171" height="189" viewBox="0 0 171 189">
+  <g id="Icon" transform="translate(-720 -476)">
+    <rect id="Rectangle_1" data-name="Rectangle 1" width="171" height="173" rx="37" transform="translate(720 476)" fill="#cafbdb"/>
+    <text id="Z" transform="translate(730 609)" fill="#707070" font-size="90" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">Z</tspan></text>
+    <text id="E" transform="matrix(-1, 0, 0, 1, 876, 636)" fill="#707070" font-size="82" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">E</tspan></text>
+    <text id="Z-2" data-name="Z" transform="translate(786 569)" fill="#707070" font-size="65" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">Z</tspan></text>
+    <text id="Z-3" data-name="Z" transform="translate(827 535)" fill="#707070" font-size="45" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">Z</tspan></text>
+    <line id="Line_1" data-name="Line 1" x1="83" transform="translate(777 631.8)" fill="none" stroke="#707070" stroke-width="8.39" stroke-dasharray="15 3"/>
+    <line id="Line_2" data-name="Line 2" x1="4" transform="translate(777 631.8)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="8.39"/>
+  </g>
+</svg>

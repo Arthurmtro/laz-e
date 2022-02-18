@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, lazy, Suspense } from 'react';
 
@@ -9,6 +10,8 @@ import { parseProfileData } from './libs/ProfilesFuncs';
 
 // Hooks
 import useProfiles from './hooks/useProfiles';
+import useTheme from './hooks/useTheme';
+import useCloseEvent from './hooks/useCloseEvent';
 
 // layout
 const Layout = lazy(() => import('./layout'));
@@ -20,10 +23,17 @@ const Settings = lazy(() => import('./pages/Settings'));
 
 export default function App() {
   const [, setProfiles] = useProfiles();
+  const { theme } = useTheme();
+  const { closeEvent } = useCloseEvent();
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('REFRESH TRIGGERED');
+    console.log('THEME :>> ', theme);
+    console.log('closeEvent :>> ', closeEvent);
+    parseProfileData(setProfiles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     parseProfileData(setProfiles);
   }, [setProfiles]);
 

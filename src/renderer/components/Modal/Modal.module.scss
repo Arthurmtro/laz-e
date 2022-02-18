@@ -10,18 +10,18 @@
 
 .modal {
   position: absolute;
-  top: 20%;
-  left: 35%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 25%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 
   &:nth-child(1n) {
     background-color: var(--background-color-darker);
     padding: 2rem 4rem;
     border-radius: 6px;
     box-shadow: 0 0 20px var(--background-color-darker);
-    width: 15rem;
+    width: 25rem;
     height: 10rem;
   }
 }

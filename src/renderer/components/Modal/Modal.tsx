@@ -2,12 +2,14 @@
 import styles from './Modal.module.scss';
 
 type ModalProps = {
+  text: string;
   openState: boolean;
   eventAccept: () => void;
   eventDeny: () => void;
 };
 
 const Modal = ({
+  text,
   openState,
   eventAccept,
   eventDeny,
@@ -18,18 +20,18 @@ const Modal = ({
         <div className={styles['modal-background']} />
         <div className={styles.modal}>
           <div>
-            <h1>Do you really wanna delete this profile ?</h1>
+            <h1>{text}</h1>
 
             <div className={styles.buttons}>
               <button className={styles.deny} type="button" onClick={eventDeny}>
-                No
+                Deny
               </button>
               <button
                 className={styles.accept}
                 type="button"
                 onClick={eventAccept}
               >
-                yes
+                Accept
               </button>
             </div>
           </div>

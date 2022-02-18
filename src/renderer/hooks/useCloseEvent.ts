@@ -7,7 +7,7 @@ import {
   setCloseEvent as setCloseEventFunc,
 } from '../libs/ProfilesFuncs';
 
-const CloseEventAtom = atom(false);
+const CloseEventAtom = atom(true);
 
 export default function useCloseEvent() {
   const [closeEvent, setCloseEvent] = useAtom(CloseEventAtom);
