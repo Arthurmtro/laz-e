@@ -23,7 +23,7 @@ const Settings = lazy(() => import('./pages/Settings'));
 
 export default function App() {
   const [, setProfiles] = useProfiles();
-  const { theme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const { closeEvent } = useCloseEvent();
 
   useEffect(() => {
@@ -58,7 +58,10 @@ export default function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/edit-profile" element={<ProfileConfig />} />
             <Route path="/add-profile" element={<ProfileConfig />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route
+              path="/settings"
+              element={<Settings theme={theme} setTheme={setTheme} />}
+            />
           </Routes>
         </Layout>
       </Suspense>

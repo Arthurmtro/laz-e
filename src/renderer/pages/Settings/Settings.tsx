@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { SetStateAction } from 'jotai';
 import { useEffect } from 'react';
 import Select from 'react-select';
 
 // Hooks
 import useCloseEvent from '../../hooks/useCloseEvent';
 import useLayout from '../../hooks/useLayout';
-import useTheme from '../../hooks/useTheme';
 
 import styles from './Settings.module.scss';
 
@@ -16,8 +16,12 @@ const options = [
   { value: 'dark', label: 'Dark' },
 ];
 
-const Settings = (): JSX.Element => {
-  const { theme, setTheme } = useTheme();
+type SettingsProps = {
+  theme: string;
+  setTheme: (update: SetStateAction<string>) => void;
+};
+
+const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
   const [, setLayout] = useLayout();
   const { closeEvent, setCloseEvent } = useCloseEvent();
 
