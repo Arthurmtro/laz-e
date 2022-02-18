@@ -78,7 +78,7 @@ const createWindow = async () => {
     minHeight: 530,
     backgroundColor: '#2A2A2A', // Dark
     // backgroundColor: '#fafafa', // Light
-    icon: getAssetPath('icon_2.png'),
+    icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -102,7 +102,7 @@ const createWindow = async () => {
       mainWindow.show();
     }
 
-    tray = new Tray(getAssetPath('icon_2.png'));
+    tray = new Tray(getAssetPath('icon.png'));
     tray.setToolTip('Laz-e');
     tray.setContextMenu(
       Menu.buildFromTemplate([
