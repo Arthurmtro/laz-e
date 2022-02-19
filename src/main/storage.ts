@@ -85,48 +85,30 @@ class Store {
 
       // TODOS: Add listeners
 
-      executablePaths.forEach(({ path }) => {
+      executablePaths.forEach(({ path, isWebUrl }) => {
         const realPath = resolve(path);
-        console.log(realPath, ' \n');
+
+        console.log('realPath => ', realPath);
 
         if (realPath.length === 0) throw new Error("Path does't not exist");
 
-        console.log('HEEEE >> ', path.split('').reverse().join(''));
-
-        console.log(
-          'test',
-          path
-            .split('')
-            .reverse()
-            .join('')
-            .slice(
-              path.split('').reverse().join('').indexOf('\\') + 1,
-              path.length
-            )
-            .split('')
-            .reverse()
-            .join('')
-        );
-
-        console.log(
-          'SHEEESHHH >> ',
-          path.slice(0, path.split('').reverse().join('').indexOf('\\'))
-        );
+        const cwd = path
+          .split('')
+          .reverse()
+          .join('')
+          .slice(
+            path.split('').reverse().join('').indexOf('\\') + 1,
+            path.length
+          )
+          .split('')
+          .reverse()
+          .join('');
 
         const executedApp = spawn(path, {
           detached: !this.data.profiles.find(({ id }) => id === profileId)
             ?.syncWithApp,
-          cwd: path
-            .split('')
-            .reverse()
-            .join('')
-            .slice(
-              path.split('').reverse().join('').indexOf('\\') + 1,
-              path.length
-            )
-            .split('')
-            .reverse()
-            .join(''),
+          cwd,
+          shell: isWebUrl,
         });
 
         executedApp.stdout.on('data', (data) => {

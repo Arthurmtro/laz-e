@@ -59,7 +59,6 @@ const ProfileConfig = (): JSX.Element => {
 
   const eventFileInput = async (event: ChangeEvent<HTMLInputElement>) => {
     try {
-      if (editedProfile.shortcuts.length >= 20) return;
       // Can't handle more than 20 shortcuts
 
       const { files } = event.target;
@@ -68,6 +67,9 @@ const ProfileConfig = (): JSX.Element => {
 
       // eslint-disable-next-line no-restricted-syntax
       for await (const file of files) {
+        if (editedProfile.shortcuts.length >= 20)
+          throw Error("You can't add app, you reach limit");
+
         if (editedProfile.shortcuts.some((e) => e.path === file.path)) return;
 
         const iconImg = await getFileIcon(file.path);
@@ -78,11 +80,12 @@ const ProfileConfig = (): JSX.Element => {
             title: file.name,
             path: file.path,
             icon: iconImg,
+            isWebUrl: file.name.includes('.url'),
           }),
         }));
       }
     } catch (error) {
-      toast.error(`error :>> ${error}`);
+      toast.error(String(error));
     }
   };
 
@@ -166,7 +169,7 @@ const ProfileConfig = (): JSX.Element => {
           hidden
           multiple
           type="file"
-          accept=".exe,js,py,msi,html"
+          accept=".exe,.js,.py,.msi,.html,.url"
           id="shortcutInput"
           onChange={eventFileInput}
         />

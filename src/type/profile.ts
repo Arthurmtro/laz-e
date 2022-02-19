@@ -2,6 +2,7 @@ export interface IShortcut {
   title: string;
   path: string;
   icon: string;
+  isWebUrl: boolean;
   // TODO: Handle if is automacion
 }
 

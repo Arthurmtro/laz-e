@@ -122,7 +122,7 @@ const createWindow = async () => {
       ])
     );
 
-    tray.on('double-click', () => {
+    tray.on('click', () => {
       if (mainWindow?.isVisible()) {
         mainWindow?.hide();
       } else {

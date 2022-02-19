@@ -41,7 +41,7 @@ export default function App() {
     <MemoryRouter>
       <ToastContainer
         position="bottom-right"
-        autoClose={1000}
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -49,7 +49,7 @@ export default function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
         limit={3}
       />
       <Suspense fallback={<h1>LOADING</h1>}>
