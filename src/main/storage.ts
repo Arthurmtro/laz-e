@@ -3,7 +3,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { ipcMain, app } from 'electron';
 import { spawn } from 'child_process';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 // Types
 import { IProfile, IShortcut } from '../type/profile';
@@ -77,7 +77,7 @@ class Store {
 
   runProfileWithId(profileId: string) {
     try {
-      const executablePaths = this.data.profiles.find(
+      const executablePaths: IShortcut[] = this.data.profiles.find(
         ({ id }) => id === profileId
       )?.shortcuts;
 
@@ -85,11 +85,56 @@ class Store {
 
       // TODOS: Add listeners
 
-      executablePaths.forEach((executablePath: IShortcut) => {
-        const executedApp = spawn(executablePath.path, {
+      executablePaths.forEach(({ path }) => {
+        const realPath = resolve(path);
+        console.log(realPath, ' \n');
+
+        if (realPath.length === 0) throw new Error("Path does't not exist");
+
+        console.log('HEEEE >> ', path.split('').reverse().join(''));
+
+        console.log(
+          'test',
+          path
+            .split('')
+            .reverse()
+            .join('')
+            .slice(
+              path.split('').reverse().join('').indexOf('\\') + 1,
+              path.length
+            )
+            .split('')
+            .reverse()
+            .join('')
+        );
+
+        console.log(
+          'SHEEESHHH >> ',
+          path.slice(0, path.split('').reverse().join('').indexOf('\\'))
+        );
+
+        const executedApp = spawn(path, {
           detached: !this.data.profiles.find(({ id }) => id === profileId)
             ?.syncWithApp,
-          stdio: 'ignore',
+          cwd: path
+            .split('')
+            .reverse()
+            .join('')
+            .slice(
+              path.split('').reverse().join('').indexOf('\\') + 1,
+              path.length
+            )
+            .split('')
+            .reverse()
+            .join(''),
+        });
+
+        executedApp.stdout.on('data', (data) => {
+          console.log(`stdout: ${data}`);
+        });
+
+        executedApp.stderr.on('data', (data) => {
+          console.error(`stderr: ${data}`);
         });
 
         executedApp.on('exit', (code, signal) => {
