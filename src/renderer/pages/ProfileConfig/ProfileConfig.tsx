@@ -232,7 +232,15 @@ const ProfileConfig = (): JSX.Element => {
               <img
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
                 role="gridcell"
-                onKeyDown={() => {}}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter') return;
+                  setEditedProfile((prevState) => ({
+                    ...prevState,
+                    shortcuts: prevState.shortcuts.filter(
+                      (allShortcut) => shortcut.path !== allShortcut.path
+                    ),
+                  }));
+                }}
                 src={shortcut.icon}
                 alt={`${shortcut.title} icon`}
                 onClick={() => {

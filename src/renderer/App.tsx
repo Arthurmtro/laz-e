@@ -24,11 +24,9 @@ const Settings = lazy(() => import('./pages/Settings'));
 export default function App() {
   const [, setProfiles] = useProfiles();
   const { theme, setTheme } = useTheme();
-  const { closeEvent } = useCloseEvent();
+  useCloseEvent();
 
   useEffect(() => {
-    console.log('THEME :>> ', theme);
-    console.log('closeEvent :>> ', closeEvent);
     parseProfileData(setProfiles);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

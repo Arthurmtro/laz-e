@@ -123,3 +123,25 @@ export const setCloseEvent = async (newValue: boolean) => {
     return false;
   }
 };
+
+export const getLauchOnStartupStatus = async () => {
+  try {
+    return await Promise.resolve<boolean>(
+      ipcRenderer.invoke('launch-on-startup')
+    );
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return false;
+  }
+};
+
+export const setLauchOnStartupStatus = async (newValue: boolean) => {
+  try {
+    return await Promise.resolve<boolean>(
+      ipcRenderer.invoke('set-launch-on-startup', newValue)
+    );
+  } catch (error) {
+    toast.error(`error :>> ${error}`);
+    return false;
+  }
+};

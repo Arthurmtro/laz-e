@@ -1,6 +1,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import AutoLaunch from 'auto-launch';
 import log from 'electron-log';
 import path from 'path';
 
@@ -30,6 +31,10 @@ const isDevelopment =
 if (isDevelopment) {
   require('electron-debug')();
 }
+
+const lazeAutoLauncher: AutoLaunch = new AutoLaunch({
+  name: 'Laz-e',
+});
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
@@ -212,6 +217,20 @@ ipcMain.handle('close-event', () => {
   } else {
     mainWindow?.close();
   }
+});
+
+ipcMain.handle('set-launch-on-startup', (_event, launchOnStartup: boolean) => {
+  if (launchOnStartup && !isDevelopment) {
+    lazeAutoLauncher.enable();
+  } else {
+    lazeAutoLauncher.disable();
+  }
+
+  return userPreferencesStore.getTheme();
+});
+
+ipcMain.handle('launch-on-startup', () => {
+  return Promise.resolve(lazeAutoLauncher.isEnabled());
 });
 
 ipcMain.handle('focus-window', () => {

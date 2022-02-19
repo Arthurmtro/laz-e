@@ -1,11 +1,10 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { SetStateAction } from 'jotai';
 import { useEffect } from 'react';
 import Select from 'react-select';
 
 // Hooks
+import useLauchOnStartupStatus from '../../hooks/useLauchOnStartupStatus';
 import useCloseEvent from '../../hooks/useCloseEvent';
 import useLayout from '../../hooks/useLayout';
 
@@ -24,6 +23,8 @@ type SettingsProps = {
 const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
   const [, setLayout] = useLayout();
   const { closeEvent, setCloseEvent } = useCloseEvent();
+  const { lauchOnStartupStatus, setLauchOnStartupStatus } =
+    useLauchOnStartupStatus();
 
   useEffect(() => {
     setLayout('Settings');
@@ -34,13 +35,15 @@ const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
       <article className={styles['theme-input']}>
         <label>Theme :</label>
         <Select
-          // @ts-ignore
-          onChange={({ value }: { value: string }) => {
-            if (value === null) return;
-            setTheme(value);
+          onChange={(newValue) => {
+            if (newValue === null) return;
+            setTheme(newValue.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.key !== 'Enter') return;
+            document.getElementById('theme-selector')?.click();
           }}
           value={options.find(({ value }) => value === theme)}
-          // @ts-ignore
           options={options}
           className={styles.select}
           isSearchable={false}
@@ -52,9 +55,29 @@ const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
           type="checkbox"
           id="syncWithApp"
           checked={!closeEvent ?? false}
+          onKeyDown={(event) => {
+            if (event.key !== 'Enter') return;
+            setCloseEvent((prev) => !prev);
+          }}
           onChange={() => setCloseEvent((prev) => !prev)}
         />
         <label htmlFor="syncWithApp">Minimise app when closing</label>
+      </article>
+
+      <article className={styles['input-checkbox']}>
+        <input
+          type="checkbox"
+          id="lauchOnStartupStatus"
+          onKeyDown={(event) => {
+            if (event.key !== 'Enter') return;
+            setLauchOnStartupStatus((prev) => !prev);
+          }}
+          checked={lauchOnStartupStatus ?? false}
+          onChange={() => setLauchOnStartupStatus((prev) => !prev)}
+        />
+        <label htmlFor="lauchOnStartupStatus">
+          Start app when system start
+        </label>
       </article>
     </div>
   );
