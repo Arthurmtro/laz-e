@@ -8,6 +8,7 @@
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
+    "deploy": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish always",
     "publish:cross": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --mac --win -p always",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts && opencollective-postinstall",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -32,7 +33,7 @@
   },
   "build": {
     "productName": "Laz-e",
-    "appId": "org.erb.Laz-e",
+    "appId": "com.laz-e.ElectronAutoUpdate",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -91,12 +92,13 @@
     "publish": {
       "provider": "github",
       "owner": "Arthurmtro",
-      "repo": "laz-e"
+      "repo": "laz-e",
+      "url": "https://github.com/Arthurmtro/laz-e.git"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Arthurmtro/laz-e.git"
+    "url": "https://github.com/Arthurmtro/laz-e.git"
   },
   "author": {
     "name": "Arthur Monteiro",
@@ -242,5 +244,5 @@
     ],
     "singleQuote": true
   },
-  "version": "2.0.7"
+  "version": "2.0.8"
 }
