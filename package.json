@@ -92,8 +92,7 @@
     "publish": {
       "provider": "github",
       "owner": "Arthurmtro",
-      "repo": "laz-e",
-      "url": "https://github.com/Arthurmtro/laz-e.git"
+      "repo": "laz-e"
     }
   },
   "repository": {
