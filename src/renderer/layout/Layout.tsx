@@ -4,6 +4,8 @@ import { FC, ReactNode } from 'react';
 import Titlebar from './TitleBar';
 import NavLink from '../components/NavLink';
 
+import Logo from '../../../assets/icon.svg';
+
 import styles from './Layout.module.scss';
 
 const Layout: FC<ReactNode> = ({ children }) => {
@@ -25,6 +27,7 @@ const Layout: FC<ReactNode> = ({ children }) => {
               ))}
             </div>
             {/* https://www.svgrepo.com/vectors */}
+            <img className={styles['logo-img']} src={Logo} alt="logo" />
           </div>
         </section>
         <section className={styles['page-content']}>{children}</section>
