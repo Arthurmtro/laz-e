@@ -35,45 +35,43 @@ const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
       <article className={styles['theme-input']}>
         <label>Theme :</label>
         <Select
-          onChange={(newValue) => {
-            if (newValue === null) return;
-            setTheme(newValue.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key !== 'Enter') return;
-            document.getElementById('theme-selector')?.click();
-          }}
+          onChange={(newValue) => (newValue ? setTheme(newValue.value) : null)}
           value={options.find(({ value }) => value === theme)}
-          options={options}
           className={styles.select}
           isSearchable={false}
+          options={options}
+          onKeyDown={(event) =>
+            event.key === 'Enter'
+              ? document.getElementById('theme-selector')?.click()
+              : null
+          }
         />
       </article>
 
       <article className={styles['input-checkbox']}>
         <input
-          type="checkbox"
-          id="syncWithApp"
-          checked={!closeEvent ?? false}
-          onKeyDown={(event) => {
-            if (event.key !== 'Enter') return;
-            setCloseEvent((prev) => !prev);
-          }}
           onChange={() => setCloseEvent((prev) => !prev)}
+          checked={!closeEvent ?? false}
+          id="syncWithApp"
+          type="checkbox"
+          onKeyDown={(event) =>
+            event.key === 'Enter' ? setCloseEvent((prev) => !prev) : null
+          }
         />
         <label htmlFor="syncWithApp">Minimise app when closing</label>
       </article>
 
       <article className={styles['input-checkbox']}>
         <input
-          type="checkbox"
-          id="lauchOnStartupStatus"
-          onKeyDown={(event) => {
-            if (event.key !== 'Enter') return;
-            setLauchOnStartupStatus((prev) => !prev);
-          }}
-          checked={lauchOnStartupStatus ?? false}
           onChange={() => setLauchOnStartupStatus((prev) => !prev)}
+          checked={lauchOnStartupStatus ?? false}
+          id="lauchOnStartupStatus"
+          type="checkbox"
+          onKeyDown={(event) =>
+            event.key === 'Enter'
+              ? setLauchOnStartupStatus((prev) => !prev)
+              : null
+          }
         />
         <label htmlFor="lauchOnStartupStatus">
           Start app when system start
