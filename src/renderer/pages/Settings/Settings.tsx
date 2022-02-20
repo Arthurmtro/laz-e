@@ -58,7 +58,7 @@ const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
             event.key === 'Enter' ? setCloseEvent((prev) => !prev) : null
           }
         />
-        <label htmlFor="syncWithApp">Minimise app when closing</label>
+        <label htmlFor="syncWithApp">Minimise Laz-e when closing</label>
       </article>
 
       <article className={styles['input-checkbox']}>
@@ -74,7 +74,7 @@ const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
           }
         />
         <label htmlFor="lauchOnStartupStatus">
-          Start app when system start
+          Start Laz-e when system start
         </label>
       </article>
     </div>
