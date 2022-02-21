@@ -92,7 +92,8 @@
     "publish": {
       "provider": "github",
       "owner": "Arthurmtro",
-      "repo": "laz-e"
+      "repo": "laz-e",
+      "token": "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"
     }
   },
   "repository": {
