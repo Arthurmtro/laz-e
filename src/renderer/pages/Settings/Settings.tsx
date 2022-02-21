@@ -2,7 +2,9 @@
 import { SetStateAction } from 'jotai';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { ipcRenderer } from 'electron';
+
+// Libs
+import { getAppVersion } from '../../libs/ProfilesFuncs';
 
 // Hooks
 import useLauchOnStartupStatus from '../../hooks/useLauchOnStartupStatus';
@@ -22,25 +24,16 @@ type SettingsProps = {
 };
 
 const Settings = ({ theme, setTheme }: SettingsProps): JSX.Element => {
-  const [version, setVersion] = useState();
+  const [version, setVersion] = useState<string>('');
   const [, setLayout] = useLayout();
   const { closeEvent, setCloseEvent } = useCloseEvent();
   const { lauchOnStartupStatus, setLauchOnStartupStatus } =
     useLauchOnStartupStatus();
 
   useEffect(() => {
-    ipcRenderer.send('app_version');
-    const versionLabel = document.getElementById('version');
-
-    ipcRenderer.on('app_version', (event, arg) => {
-      setVersion(arg.version);
-
-      ipcRenderer.removeAllListeners('app_version');
-      console.log('app_version: ', arg.version);
-
-      if (!versionLabel) return;
-      versionLabel.innerText = `Version ${arg.version}`;
-    });
+    (async () => {
+      setVersion(await getAppVersion());
+    })();
   }, []);
 
   useEffect(() => {

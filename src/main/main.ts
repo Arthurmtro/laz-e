@@ -220,11 +220,12 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
-ipcMain.on('app_version', (event) => {
+ipcMain.handle('app_version', (event) => {
   event.sender.send('app_version', { version: app.getVersion() });
+  return app.getVersion();
 });
 
-ipcMain.on('restart_app', () => {
+ipcMain.handle('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
 

@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Libs
-import { parseProfileData } from './libs/ProfilesFuncs';
+import { parseProfileData, getAppVersion } from './libs/ProfilesFuncs';
 
 // Hooks
 import useProfiles from './hooks/useProfiles';
@@ -27,6 +27,7 @@ export default function App() {
   useCloseEvent();
 
   useEffect(() => {
+    getAppVersion();
     parseProfileData(setProfiles);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

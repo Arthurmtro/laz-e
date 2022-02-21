@@ -9,6 +9,12 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.on(channel, (event, ...args) => func(...args));
       // }
     },
+    send(channel, func) {
+      ipcRenderer.send(channel, (event, ...args) => func(...args));
+    },
+    removeAllListeners(channel) {
+      ipcRenderer.removeAllListeners(channel);
+    },
     once(channel, func) {
       const validChannels = ['ipc-example'];
       if (validChannels.includes(channel)) {
