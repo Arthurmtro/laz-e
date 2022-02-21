@@ -1,5 +1,13 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
-import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  Tray,
+  Menu,
+  Notification,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import AutoLaunch from 'auto-launch';
 import log from 'electron-log';
@@ -15,6 +23,8 @@ export default class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
+
+const gotTheLock = app.requestSingleInstanceLock();
 
 let mainWindow: BrowserWindow | null = null;
 let isQuiting: boolean;
@@ -130,6 +140,20 @@ const createWindow = async () => {
     tray.on('click', () => {
       if (mainWindow?.isVisible()) {
         mainWindow?.hide();
+        const notification = {
+          title: 'Laz-e is minimized in tray',
+          icon: getAssetPath('icon.png'),
+        };
+        const notif = new Notification(notification);
+
+        notif.addListener('click', () => {
+          if (!mainWindow) return;
+          console.log('FOCUSING');
+          mainWindow.show();
+          mainWindow.focus();
+        });
+
+        notif.show();
       } else {
         mainWindow?.show();
       }
@@ -145,6 +169,23 @@ const createWindow = async () => {
     if (!isQuiting) {
       event.preventDefault();
       mainWindow.hide();
+      const notification = {
+        title: 'Laz-e is minimized in tray',
+        body: 'Click on the icon to reopen it',
+        icon: getAssetPath('icon.png'),
+      };
+
+      const notif = new Notification(notification);
+
+      notif.addListener('click', () => {
+        if (!mainWindow) return;
+        console.log('FOCUSING');
+        mainWindow.show();
+        mainWindow.focus();
+      });
+
+      notif.show();
+
       event.returnValue = false;
     }
   });
@@ -178,6 +219,14 @@ const createWindow = async () => {
   // eslint-disable-next-line no-new
   new AppUpdater();
 };
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});
 
 ipcMain.handle('get-theme', () => {
   return userPreferencesStore.getTheme();
@@ -260,12 +309,30 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
-  .then(() => {
-    createWindow();
-    app.on('activate', () => {
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+if (!gotTheLock) {
+  app.quit();
+} else {
+  // app.on('second-instance', (_event, _commandLine, _workingDirectory) => {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+  app
+    .whenReady()
+    .then(() => {
+      createWindow();
+      app.on('activate', () => {
+        if (mainWindow === null) createWindow();
+      });
+    })
+    .catch(console.log);
+}
+
+autoUpdater.on('update-available', () => {
+  mainWindow?.webContents.send('update_available');
+});
+autoUpdater.on('update-downloaded', () => {
+  mainWindow?.webContents.send('update_downloaded');
+});
