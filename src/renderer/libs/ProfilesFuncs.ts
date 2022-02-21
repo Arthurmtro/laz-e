@@ -200,11 +200,12 @@ export const getAppVersion = async () => {
   // });
 };
 
-export const checkForUpdate = async () => {
-  const updateAvailable = await Promise.resolve<boolean>(
-    ipcRenderer.invoke('update_available')
-  );
-  ipcRenderer.removeAllListeners('update_available');
+export const checkForUpdate = () => {
+  ipcRenderer.on('update_available', () => {
+    console.log('update_available');
+    toast.warning('A new update is available');
+  });
 
-  return updateAvailable;
+  ipcRenderer.removeAllListeners('update_available');
+  // return updateAvailable;
 };
