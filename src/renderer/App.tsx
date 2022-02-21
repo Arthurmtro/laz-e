@@ -6,7 +6,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Libs
-import { parseProfileData, getAppVersion } from './libs/ProfilesFuncs';
+import {
+  parseProfileData,
+  checkForUpdate,
+  getAppVersion,
+} from './libs/ProfilesFuncs';
 
 // Hooks
 import useProfiles from './hooks/useProfiles';
@@ -29,6 +33,7 @@ export default function App() {
   useEffect(() => {
     getAppVersion();
     parseProfileData(setProfiles);
+    checkForUpdate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
